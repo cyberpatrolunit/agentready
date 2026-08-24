@@ -2,7 +2,7 @@ import { detect } from '/lib/detect.js';
 import { generate, stackSummary } from '/lib/generate.js';
 
 // ---- config (filled in at launch) ----
-const GUMROAD_URL = 'https://bplace.gumroad.com/l/getagentready';
+const GUMROAD_URL = 'https://agentready.gumroad.com/l/getagentready';
 const LAUNCH_DISCOUNT_ACTIVE = true; // flip when the LAUNCH29 code exists → link /LAUNCH29 and show $29
 const PRICE_FULL = '$49';
 const PRICE_NOW = '$29';
