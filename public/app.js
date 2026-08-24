@@ -2,7 +2,8 @@ import { detect } from '/lib/detect.js';
 import { generate, stackSummary } from '/lib/generate.js';
 
 // ---- config (filled in at launch) ----
-const GUMROAD_URL = window.AGENTREADY_GUMROAD_URL || 'https://gumroad.com';
+const GUMROAD_URL = 'https://bplace.gumroad.com/l/getagentready';
+const LAUNCH_DISCOUNT_ACTIVE = false; // flip when the LAUNCH29 code exists → link /LAUNCH29 and show $29
 const PRICE_FULL = '$49';
 const PRICE_NOW = '$29';
 
@@ -238,17 +239,14 @@ function renderAddedFiles() {
 
 // ---- buy link ----
 const buy = $('#buy-link');
-const gumroadLive = GUMROAD_URL.includes('/l/'); // real product URLs only
-if (gumroadLive) {
-  buy.href = GUMROAD_URL;
+if (LAUNCH_DISCOUNT_ACTIVE) {
+  buy.href = GUMROAD_URL + '/LAUNCH29';
+  $('#price-full').textContent = PRICE_FULL;
+  $('#price-now').textContent = PRICE_NOW;
 } else {
-  // Pre-launch: honest waitlist instead of a dead checkout.
-  buy.href =
-    'mailto:hello@getagentready.dev?subject=Pro%20Pack%20launch%20notification&body=Notify%20me%20when%20the%20Agent-Ready%20Pro%20Pack%20launches%20(launch%20price%20applies).';
-  buy.textContent = 'Launching this week — get notified';
+  buy.href = GUMROAD_URL;
+  document.querySelector('.price').textContent = PRICE_FULL;
 }
-$('#price-full').textContent = PRICE_FULL;
-$('#price-now').textContent = PRICE_NOW;
 
 // ---- intro: type the Next.js sample on first load ----
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
