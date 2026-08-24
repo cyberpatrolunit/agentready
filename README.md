@@ -2,6 +2,8 @@
 
 **Generate a `CLAUDE.md` + `AGENTS.md` tailored to your repo — in your browser or one `npx` away.**
 
+![AgentReady demo: paste a package.json, get a tailored CLAUDE.md](docs/demo.gif)
+
 Coding agents read `CLAUDE.md` (Claude Code) and `AGENTS.md` (the open standard) before touching your code. Most repos don't have one, and generic templates don't help. AgentReady detects your actual stack and generates both files with:
 
 - **Exact commands** — install, dev, build, lint, typecheck, and how to run a *single* test with your runner
