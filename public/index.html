@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentReady — free CLAUDE.md &amp; AGENTS.md generator</title>
+<meta name="description" content="Paste your package.json, pyproject.toml, Cargo.toml or go.mod and get a tailored CLAUDE.md and AGENTS.md in seconds. Free, no signup, runs entirely in your browser.">
+<meta property="og:title" content="AgentReady — make your repo agent-ready in 30 seconds">
+<meta property="og:description" content="A free generator for CLAUDE.md and AGENTS.md, tailored to your actual stack. No signup, nothing uploaded.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101826'/%3E%3Cpath d='M9 21l4-10h2l4 10h-2.2l-.8-2.2h-4l-.8 2.2H9zm5-8l-1.5 4h3L14 13z' fill='%233fb950'/%3E%3Cpath d='M21 11h2v10h-2z' fill='%23e6edf3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="/"><span class="brand-mark">A|</span> AgentReady</a>
+  <div class="nav-links">
+    <a href="#tool">Generator</a>
+    <a href="#pro" class="nav-pro">Pro Pack</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">CLAUDE.md · AGENTS.md · generated from your real stack</p>
+  <h1>Your repo, explained<br>to your coding agent.</h1>
+  <p class="sub">Paste a <code>package.json</code>, <code>pyproject.toml</code>, <code>Cargo.toml</code> or <code>go.mod</code>.
+  Get a tailored <code>CLAUDE.md</code> and <code>AGENTS.md</code> — commands, conventions and the gotchas of your exact stack.
+  Free. No signup. <strong>Nothing leaves your browser.</strong></p>
+</header>
+
+<main>
+<section class="tool" id="tool" aria-label="Generator">
+  <div class="pane pane-in">
+    <div class="pane-bar">
+      <span class="pane-title" id="input-filename">package.json</span>
+      <span class="pane-actions">
+        <label class="file-btn">Open file<input type="file" id="file-input" multiple accept=".json,.toml,.txt,.mod,.lock,.yaml,.lockb,Gemfile" hidden></label>
+      </span>
+    </div>
+    <textarea id="manifest-input" spellcheck="false" aria-label="Paste your manifest file here" placeholder="Paste your package.json / pyproject.toml / Cargo.toml / go.mod here…"></textarea>
+    <div class="samples" role="group" aria-label="Load a sample">
+      <span class="samples-label">samples:</span>
+      <button data-sample="next">Next.js</button>
+      <button data-sample="fastapi">FastAPI</button>
+      <button data-sample="rust">Rust</button>
+      <button data-sample="go">Go</button>
+    </div>
+    <div class="extras">
+      <input type="text" id="description-input" placeholder="Optional: one line about what this project is" aria-label="Project description">
+      <div class="added-files" id="added-files" hidden></div>
+    </div>
+  </div>
+
+  <div class="conveyor" aria-hidden="true">
+    <div class="chips" id="detected-chips"></div>
+    <div class="arrow">→</div>
+  </div>
+
+  <div class="pane pane-out">
+    <div class="pane-bar">
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true" data-tab="claude">CLAUDE.md</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="agents">AGENTS.md</button>
+      </div>
+      <span class="pane-actions">
+        <button id="copy-btn" class="ghost-btn">Copy</button>
+        <button id="download-btn" class="ghost-btn">Download</button>
+      </span>
+    </div>
+    <pre id="output" tabindex="0" aria-live="polite"><code id="output-code"></code></pre>
+  </div>
+</section>
+
+<section class="how">
+  <div class="step"><span class="k">01</span><h3>Paste a manifest</h3><p>Any mix of <code>package.json</code>, <code>pyproject.toml</code>, <code>requirements.txt</code>, <code>Cargo.toml</code>, <code>go.mod</code>, <code>composer.json</code>, <code>Gemfile</code> — lockfiles too.</p></div>
+  <div class="step"><span class="k">02</span><h3>We detect your stack</h3><p>Framework, package manager, test runner, linter — and resolve the exact commands an agent should run, including how to run a single test.</p></div>
+  <div class="step"><span class="k">03</span><h3>Copy both files</h3><p><code>CLAUDE.md</code> for Claude Code, <code>AGENTS.md</code> for every agent that follows the open standard. Commit them and your agent stops guessing.</p></div>
+</section>
+
+<section class="why">
+  <h2>Why these two files matter</h2>
+  <p>Coding agents read <code>CLAUDE.md</code> and <code>AGENTS.md</code> before touching your code. A good one tells the agent how to install, test, and lint <em>your</em> way — and which mistakes your stack invites. Repos with clear agent instructions get fewer broken builds, fewer invented commands, and diffs that match house style. Most repos still don't have one; yours can in the next minute.</p>
+  <ul class="facts">
+    <li><strong>Private by design.</strong> Detection and generation run entirely client-side. Your files are never uploaded anywhere.</li>
+    <li><strong>Stack-aware.</strong> 30+ frameworks covered — from Next.js server components to FastAPI's event-loop traps to Cargo workspaces.</li>
+    <li><strong>Standards-based.</strong> AGENTS.md output follows the open format supported across coding agents.</li>
+  </ul>
+</section>
+
+<section class="pro" id="pro">
+  <div class="pro-card">
+    <p class="eyebrow eyebrow-light">Go further</p>
+    <h2>Agent-Ready Pro Pack</h2>
+    <p class="pro-lead">The generator gets you a great first file. The Pro Pack is everything we know about making agents genuinely productive in a real codebase:</p>
+    <ul class="pro-list">
+      <li>Production-grade <strong>Claude Code skills</strong> — code review, TDD, debugging, refactoring and release workflows you install once and reuse in every repo</li>
+      <li><strong>Hooks collection</strong> — auto-format on edit, test-gates before commit, secret scanning</li>
+      <li><strong>Deep per-stack configs</strong> — hand-tuned CLAUDE.md files for 10 stacks, far beyond what the free tool emits</li>
+      <li><strong>CI recipes</strong> — GitHub Actions for agent-assisted review on every PR</li>
+      <li><strong>Team playbook</strong> — rolling out agent conventions without the chaos</li>
+      <li><strong>Lifetime updates</strong> as models and best practices evolve</li>
+    </ul>
+    <div class="pro-cta">
+      <a class="buy-btn" id="buy-link" href="#" rel="noopener">Get the Pro Pack</a>
+      <span class="price"><s id="price-full"></s> <span id="price-now"></span> launch price</span>
+    </div>
+    <p class="guarantee">30-day money-back guarantee, no questions asked.</p>
+  </div>
+</section>
+
+<section class="faq">
+  <h2>Questions</h2>
+  <details><summary>Is the generator really free?</summary><p>Yes — free, no account, no rate limits, no telemetry on your code. It exists because we'd rather show you the quality than tell you about it.</p></details>
+  <details><summary>Do my files get uploaded?</summary><p>No. Parsing and generation are plain JavaScript running in your browser tab. You can disconnect from the network after the page loads and it still works.</p></details>
+  <details><summary>What's the difference between CLAUDE.md and AGENTS.md?</summary><p><code>CLAUDE.md</code> is read by Claude Code specifically. <code>AGENTS.md</code> is an open format read by many coding agents. They carry the same substance; we generate both so you're covered either way.</p></details>
+  <details><summary>My stack wasn't detected well. Can you fix it?</summary><p>Probably — email <a href="mailto:hello@getagentready.dev">hello@getagentready.dev</a> with the manifest (or what it got wrong) and we'll improve detection.</p></details>
+</section>
+</main>
+
+<footer class="footer">
+  <span>© 2026 AgentReady · <a href="mailto:hello@getagentready.dev">hello@getagentready.dev</a></span>
+  <span class="footer-note">Runs in your browser. Your code stays yours.</span>
+</footer>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

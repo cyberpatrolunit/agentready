@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { detect } from './detect.js';
+import { detect } from '../public/lib/detect.js';
 
 const nextPkg = JSON.stringify({
   name: 'acme-web',
