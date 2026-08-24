@@ -48,7 +48,7 @@
     <div class="pane-bar">
       <span class="pane-title" id="input-filename">package.json</span>
       <span class="pane-actions">
-        <label class="file-btn">Open file<input type="file" id="file-input" multiple accept=".json,.toml,.txt,.mod,.lock,.yaml,.lockb,Gemfile" hidden></label>
+        <label class="file-btn">Open file<input type="file" id="file-input" multiple accept=".json,.toml,.txt,.mod,.lock,.yaml,.lockb,.cursorrules,.mdc,Gemfile" hidden></label>
       </span>
     </div>
     <textarea id="manifest-input" spellcheck="false" aria-label="Paste your manifest file here" placeholder="Paste your package.json / pyproject.toml / Cargo.toml / go.mod here…"></textarea>
@@ -91,7 +91,7 @@
 </section>
 
 <section class="how">
-  <div class="step"><span class="k">01</span><h3>Paste a manifest</h3><p>Any mix of <code>package.json</code>, <code>pyproject.toml</code>, <code>requirements.txt</code>, <code>Cargo.toml</code>, <code>go.mod</code>, <code>composer.json</code>, <code>Gemfile</code> — lockfiles too.</p></div>
+  <div class="step"><span class="k">01</span><h3>Paste a manifest</h3><p>Any mix of <code>package.json</code>, <code>pyproject.toml</code>, <code>requirements.txt</code>, <code>Cargo.toml</code>, <code>go.mod</code>, <code>composer.json</code>, <code>Gemfile</code> — lockfiles and <code>.cursorrules</code> too.</p></div>
   <div class="step"><span class="k">02</span><h3>We detect your stack</h3><p>Framework, package manager, test runner, linter — and resolve the exact commands an agent should run, including how to run a single test.</p></div>
   <div class="step"><span class="k">03</span><h3>Copy both files</h3><p><code>CLAUDE.md</code> for Claude Code, <code>AGENTS.md</code> for every agent that follows the open standard. Commit them and your agent stops guessing.</p></div>
 </section>
@@ -142,6 +142,6 @@
 </footer>
 
 <script src="https://gumroad.com/js/gumroad.js" defer></script>
-<script type="module" src="/app.js?v=7"></script>
+<script type="module" src="/app.js?v=8"></script>
 </body>
 </html>

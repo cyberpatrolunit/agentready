@@ -168,3 +168,13 @@ describe('detect: graceful degradation', () => {
     expect(p.projectName).toBe(null);
   });
 });
+
+describe('detect: .cursorrules import', () => {
+  it('captures cursorrules content as imported rules', () => {
+    const p = detect([
+      { name: 'package.json', content: JSON.stringify({ name: 'x', dependencies: { react: '18' } }) },
+      { name: '.cursorrules', content: 'Always use functional components.\nPrefer named exports.' },
+    ]);
+    expect(p.importedRules).toContain('functional components');
+  });
+});

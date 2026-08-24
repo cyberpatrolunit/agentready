@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convert .cursorrules to CLAUDE.md (free, in your browser)</title>
+<meta name="description" content="Moving from Cursor to Claude Code? Convert your .cursorrules into a proper CLAUDE.md + AGENTS.md — your rules carried over, plus stack-detected commands and conventions. Free, nothing uploaded.">
+<link rel="canonical" href="https://getagentready.dev/cursorrules-to-claude-md/">
+<meta property="og:image" content="https://getagentready.dev/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://getagentready.dev/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101826'/%3E%3Cpath d='M9 21l4-10h2l4 10h-2.2l-.8-2.2h-4l-.8 2.2H9zm5-8l-1.5 4h3L14 13z' fill='%233fb950'/%3E%3Cpath d='M21 11h2v10h-2z' fill='%23e6edf3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .article { max-width: 720px; margin: 40px auto 0; padding: 0 24px; }
+  .article h1 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 14px; }
+  .article h2 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.01em; margin: 36px 0 10px; }
+  .article p, .article li { color: var(--muted); }
+  .article strong { color: var(--ink); }
+  .article ul, .article ol { padding-left: 20px; display: grid; gap: 6px; }
+  .cta-band { margin: 40px 0; padding: 20px 22px; border: 1px solid var(--line); border-radius: 12px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .cta-band a { background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; padding: 10px 18px; border-radius: 8px; }
+  @media (prefers-color-scheme: dark) { .cta-band a { color: #08110a; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="/"><span class="brand-mark">A|</span> AgentReady</a>
+  <div class="nav-links"><a href="/#tool">Generator</a><a href="/#pro" class="nav-pro">Pro Pack</a></div>
+</nav>
+
+<article class="article">
+<h1>Convert .cursorrules to CLAUDE.md</h1>
+<p>Trying Claude Code (or adding it alongside Cursor) and don't want to rewrite the rules you've refined in <code>.cursorrules</code>? Our free generator does the migration properly: your existing rules are carried over verbatim into a <strong>Project rules</strong> section, and around them we generate what a <code>.cursorrules</code> file usually lacks — your repo's exact commands (install, build, lint, single-test invocation), stack conventions, and known gotchas, detected from your <code>package.json</code> / <code>pyproject.toml</code> / <code>Cargo.toml</code> / <code>go.mod</code>.</p>
+
+<h2>How to convert</h2>
+<ol>
+<li>Open the <a href="/#tool">generator</a> and paste your manifest (e.g. <code>package.json</code>).</li>
+<li>Click <strong>Open file</strong> (or drag &amp; drop) and add your <code>.cursorrules</code> — Cursor's newer <code>.mdc</code> rule files work too; MDC frontmatter is stripped automatically.</li>
+<li>Copy or download the resulting <code>CLAUDE.md</code> and <code>AGENTS.md</code> and commit them.</li>
+</ol>
+<p>Or in the terminal, from your repo root — it picks up <code>.cursorrules</code> automatically:</p>
+<p><code>npx getagentready</code></p>
+
+<h2>Why not just rename the file?</h2>
+<ul>
+<li><code>.cursorrules</code> files are usually style rules only. Agents fail most often on <em>commands</em> — the generated CLAUDE.md includes the exact ones for your toolchain, including how to run a single test.</li>
+<li>You get <code>AGENTS.md</code> as well — the open format read by many coding agents — so the same rules cover your whole toolchain, Cursor included.</li>
+<li>Everything runs client-side in your browser. Your rules and manifests are never uploaded.</li>
+</ul>
+
+<h2>Keep both tools happy</h2>
+<p>Nothing forces a choice: keep <code>.cursorrules</code> for Cursor, commit <code>CLAUDE.md</code> + <code>AGENTS.md</code> for everything else, and treat one of them as the source of truth when you update rules. See our <a href="/claude-md-guide/">CLAUDE.md guide</a> for what belongs in the file long-term.</p>
+
+<div class="cta-band">
+  <span><strong>Migrate in 30 seconds.</strong> Manifest + .cursorrules in, CLAUDE.md + AGENTS.md out — free, nothing leaves your browser.</span>
+  <a href="/#tool">Convert mine →</a>
+</div>
+</article>
+
+<footer class="footer">
+  <span>© 2026 AgentReady · <a href="mailto:hello@getagentready.dev">hello@getagentready.dev</a> · <a href="/claude-md-guide/">CLAUDE.md guide</a> · <a href="/agents-md-guide/">AGENTS.md guide</a></span>
+  <span class="footer-note">Runs in your browser. Your code stays yours.</span>
+</footer>
+</body>
+</html>

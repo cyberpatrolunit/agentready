@@ -141,6 +141,10 @@ export function generate(profile, options = {}) {
 
   const notesBlock = notes.length ? `\n> Note: ${notes.join(' ')}\n` : '';
 
+  const importedBlock = p.importedRules
+    ? `\n## Project rules\n\nCarried over from this repo's existing agent rules (.cursorrules):\n\n${p.importedRules}\n`
+    : '';
+
   const testingBlock = p.testRunner
     ? `Tests use ${TOOL_LABELS[p.testRunner] || p.testRunner}. Write or update tests alongside behavior changes; run the single-test command during iteration and the full suite before finishing.`
     : 'Add a test runner and record its commands here — agents work dramatically better when they can verify changes.';
@@ -164,7 +168,7 @@ ${testingBlock}
 ## Conventions
 
 ${conventionsBlock}
-${gotchasBlock}${credit}`;
+${importedBlock}${gotchasBlock}${credit}`;
 
   const agentsMd = `# AGENTS.md
 
@@ -185,7 +189,7 @@ ${testingBlock}
 ## Code style and conventions
 
 ${conventionsBlock}
-${gotchasBlock}
+${importedBlock}${gotchasBlock}
 ## Pull requests
 
 - Keep PRs focused on one change; describe what and why, not how.

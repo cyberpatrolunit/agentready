@@ -14,6 +14,7 @@ const MANIFESTS = [
   'go.mod',
   'composer.json',
   'Gemfile',
+  '.cursorrules',
   'pnpm-lock.yaml',
   'yarn.lock',
   'package-lock.json',

@@ -64,6 +64,7 @@ function emptyProfile() {
     formatter: null,
     typescript: false,
     monorepo: false,
+    importedRules: null,
     scripts: {},
     commands: {},
     notes: [],
@@ -101,6 +102,7 @@ export function detect(files) {
       else if (name === 'go.mod') detectGo(p, f.content);
       else if (name === 'composer.json') detectComposer(p, f.content);
       else if (name === 'gemfile') detectGemfile(p, f.content);
+      else if (name === '.cursorrules' || name.endsWith('.mdc')) detectCursorRules(p, f.content);
     } catch {
       p.notes.push(`\`${f.name}\` could not be parsed; used sensible defaults for its ecosystem.`);
       fallbackLanguage(p, name);
@@ -277,6 +279,16 @@ function detectGo(p, content) {
     lint: p.commands.lint || 'go vet ./...',
     format: p.commands.format || 'gofmt -w .',
   });
+}
+
+// .cursorrules / Cursor .mdc rule files: carry the rules over verbatim
+// (minus any MDC frontmatter) so nothing is lost in the migration.
+function detectCursorRules(p, content) {
+  let text = content.trim();
+  const fm = text.match(/^---\n[\s\S]*?\n---\n?/);
+  if (fm) text = text.slice(fm[0].length).trim();
+  if (!text) return;
+  p.importedRules = p.importedRules ? p.importedRules + '\n\n' + text : text;
 }
 
 function detectComposer(p, content) {

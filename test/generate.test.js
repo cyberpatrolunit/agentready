@@ -95,3 +95,16 @@ describe('generate: user description is woven in', () => {
     expect(claudeMd).toContain('vintage synthesizers');
   });
 });
+
+describe('generate: imported cursorrules appear in output', () => {
+  it('includes an imported rules section', () => {
+    const profile = detect([
+      { name: 'package.json', content: nextPkg },
+      { name: '.cursorrules', content: 'Always use functional components.' },
+    ]);
+    const { claudeMd, agentsMd } = generate(profile, {});
+    expect(claudeMd).toContain('functional components');
+    expect(claudeMd.toLowerCase()).toContain('project rules');
+    expect(agentsMd).toContain('functional components');
+  });
+});
