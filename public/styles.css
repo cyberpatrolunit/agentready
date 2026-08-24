@@ -155,6 +155,9 @@ textarea#manifest-input:focus { outline: none; }
   color: var(--pane-text); white-space: pre-wrap; word-break: break-word;
 }
 #output:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: -2px; }
+.share-row { padding: 10px 14px; border-top: 1px solid var(--pane-line); font-family: var(--mono); font-size: 0.75rem; color: var(--pane-muted); }
+.share-row a { color: var(--accent-bright); text-decoration: none; }
+.share-row a:hover { text-decoration: underline; }
 
 /* ---- how it works ---- */
 .how {
