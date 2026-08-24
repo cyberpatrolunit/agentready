@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code hooks: enforce quality automatically (guide + examples)</title>
+<meta name="description" content="How Claude Code hooks work — PreToolUse, PostToolUse, blocking with exit code 2 — with three production patterns: auto-format on edit, test-gate before commit, secret scanning.">
+<link rel="canonical" href="https://getagentready.dev/claude-code-hooks-guide/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101826'/%3E%3Cpath d='M9 21l4-10h2l4 10h-2.2l-.8-2.2h-4l-.8 2.2H9zm5-8l-1.5 4h3L14 13z' fill='%233fb950'/%3E%3Cpath d='M21 11h2v10h-2z' fill='%23e6edf3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .article { max-width: 720px; margin: 40px auto 0; padding: 0 24px; }
+  .article h1 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 14px; }
+  .article h2 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.01em; margin: 36px 0 10px; }
+  .article p, .article li { color: var(--muted); }
+  .article strong { color: var(--ink); }
+  .article ul { padding-left: 20px; display: grid; gap: 6px; }
+  .article pre { background: var(--pane); color: var(--pane-text); border: 1px solid var(--pane-line); border-radius: 10px; padding: 16px; overflow-x: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.55; }
+  .cta-band { margin: 40px 0; padding: 20px 22px; border: 1px solid var(--line); border-radius: 12px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .cta-band a { background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; padding: 10px 18px; border-radius: 8px; }
+  @media (prefers-color-scheme: dark) { .cta-band a { color: #08110a; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="/"><span class="brand-mark">A|</span> AgentReady</a>
+  <div class="nav-links"><a href="/#tool">Generator</a><a href="/#pro" class="nav-pro">Pro Pack</a></div>
+</nav>
+
+<article class="article">
+<h1>Claude Code hooks: enforce quality automatically</h1>
+<p>Instruction files like <a href="/claude-md-guide/">CLAUDE.md</a> tell an agent what to do. Hooks make parts of it non-optional: shell commands the harness runs around tool calls, able to observe, augment, or block them. The agent can't forget what the harness enforces — and neither can you.</p>
+
+<h2>How hooks work</h2>
+<p>Hooks are configured in <code>.claude/settings.json</code> under a <code>hooks</code> key, grouped by event. The two you'll use most:</p>
+<ul>
+<li><strong>PreToolUse</strong> — runs before a tool call (an edit, a shell command). Exit code <code>2</code> blocks the call, and whatever the hook wrote to stderr is shown to the agent as feedback.</li>
+<li><strong>PostToolUse</strong> — runs after a tool call succeeds. Ideal for formatting and cleanup.</li>
+</ul>
+<p>Each hook receives a JSON payload on stdin describing the tool call (tool name, file path, command, new content). A <code>matcher</code> limits which tools trigger it:</p>
+<pre>{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{ "type": "command", "command": "bash .claude/hooks/auto-format.sh" }]
+    }]
+  }
+}</pre>
+
+<h2>The three hooks worth having everywhere</h2>
+<ul>
+<li><strong>Auto-format on edit</strong> (PostToolUse on Edit/Write): read the edited file's path from the payload, run the right formatter for its extension. Style debates disappear; every agent edit lands formatted.</li>
+<li><strong>Test-gate before commit</strong> (PreToolUse on Bash): when the command is a <code>git commit</code>, run the project's tests first; on failure, exit 2 with the failing output on stderr. The agent sees <em>which</em> tests failed and fixes the cause instead of committing red.</li>
+<li><strong>Secret scan on write</strong> (PreToolUse on Edit/Write): grep the new content for key patterns (AWS ids, private key blocks, tokens); exit 2 with the matched pattern named. Secrets stop at the door instead of in the git history.</li>
+</ul>
+
+<h2>Why exit code 2 is the whole trick</h2>
+<p>A blocked call isn't a dead end — it's a conversation. Because stderr is fed back to the agent, a good hook writes an actionable message: "Commit blocked: tests failing (ran: npm test). Last 40 lines: …". The agent reads it, fixes the actual problem, and retries. Bad hooks block silently; good hooks teach.</p>
+
+<h2>Pitfalls</h2>
+<ul>
+<li>Hooks load at session start — restart the session (or check <code>/hooks</code>) after changing settings.</li>
+<li>Parse the stdin payload with a real JSON parser, not grep — paths and commands contain every character you don't expect.</li>
+<li>Keep PostToolUse hooks fast and always-zero-exit; formatting should never block work.</li>
+<li>Give escape hatches: an <code>allow-secret</code> marker comment for deliberate examples beats a hook people disable.</li>
+</ul>
+
+<div class="cta-band">
+  <span><strong>Skip writing them yourself.</strong> The Agent-Ready Pro Pack ships all three hooks as tested scripts with copy-paste settings — plus 12 workflow skills and 10 per-stack configs.</span>
+  <a href="/#pro">Get the Pro Pack →</a>
+</div>
+</article>
+
+<footer class="footer">
+  <span>© 2026 AgentReady · <a href="mailto:hello@getagentready.dev">hello@getagentready.dev</a> · <a href="/claude-md-guide/">CLAUDE.md guide</a> · <a href="/agents-md-guide/">AGENTS.md guide</a></span>
+  <span class="footer-note">Runs in your browser. Your code stays yours.</span>
+</footer>
+</body>
+</html>
