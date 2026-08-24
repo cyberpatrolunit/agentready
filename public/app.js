@@ -234,7 +234,15 @@ function renderAddedFiles() {
 
 // ---- buy link ----
 const buy = $('#buy-link');
-buy.href = GUMROAD_URL;
+const gumroadLive = GUMROAD_URL.includes('/l/'); // real product URLs only
+if (gumroadLive) {
+  buy.href = GUMROAD_URL;
+} else {
+  // Pre-launch: honest waitlist instead of a dead checkout.
+  buy.href =
+    'mailto:hello@getagentready.dev?subject=Pro%20Pack%20launch%20notification&body=Notify%20me%20when%20the%20Agent-Ready%20Pro%20Pack%20launches%20(launch%20price%20applies).';
+  buy.textContent = 'Launching this week — get notified';
+}
 $('#price-full').textContent = PRICE_FULL;
 $('#price-now').textContent = PRICE_NOW;
 
