@@ -136,9 +136,15 @@ function regenerate() {
   filenameEl.textContent = files.length ? files.map((f) => f.name).join(' + ') : 'paste a manifest';
 }
 
+let chipsSummary = null;
+let suppressChips = false;
+
 function renderChips(profile) {
-  chipsEl.innerHTML = '';
+  if (suppressChips) return;
   const summary = stackSummary(profile);
+  if (summary === chipsSummary) return; // no churn when detection is unchanged
+  chipsSummary = summary;
+  chipsEl.innerHTML = '';
   if (!summary) return;
   for (const part of summary.split(', ').slice(0, 6)) {
     const el = document.createElement('span');
@@ -259,16 +265,16 @@ async function intro() {
     return;
   }
   const step = Math.max(8, Math.floor(sample.length / 90));
+  suppressChips = true; // chips appear once, when the manifest is complete
   for (let i = 0; i <= sample.length; i += step) {
-    if (userTouched) return; // user started doing their own thing — stop the demo
+    if (userTouched) break; // user started doing their own thing — stop the demo
     input.value = sample.slice(0, i);
     if (i % (step * 6) === 0) regenerate();
     await new Promise((r) => setTimeout(r, 16));
   }
-  if (!userTouched) {
-    input.value = sample;
-    regenerate();
-  }
+  suppressChips = false;
+  if (!userTouched) input.value = sample;
+  regenerate();
 }
 
 intro();
