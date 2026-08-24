@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AGENTS.md: the open format for coding agents, explained</title>
+<meta name="description" content="What AGENTS.md is, which tools read it, how it relates to CLAUDE.md, and what a good one contains — with a complete example and a free generator.">
+<link rel="canonical" href="https://getagentready.dev/agents-md-guide/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101826'/%3E%3Cpath d='M9 21l4-10h2l4 10h-2.2l-.8-2.2h-4l-.8 2.2H9zm5-8l-1.5 4h3L14 13z' fill='%233fb950'/%3E%3Cpath d='M21 11h2v10h-2z' fill='%23e6edf3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .article { max-width: 720px; margin: 40px auto 0; padding: 0 24px; }
+  .article h1 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 14px; }
+  .article h2 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.01em; margin: 36px 0 10px; }
+  .article p, .article li { color: var(--muted); }
+  .article strong { color: var(--ink); }
+  .article ul { padding-left: 20px; display: grid; gap: 6px; }
+  .article pre { background: var(--pane); color: var(--pane-text); border: 1px solid var(--pane-line); border-radius: 10px; padding: 16px; overflow-x: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.55; }
+  .cta-band { margin: 40px 0; padding: 20px 22px; border: 1px solid var(--line); border-radius: 12px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .cta-band a { background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; padding: 10px 18px; border-radius: 8px; }
+  @media (prefers-color-scheme: dark) { .cta-band a { color: #08110a; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="/"><span class="brand-mark">A|</span> AgentReady</a>
+  <div class="nav-links"><a href="/#tool">Generator</a><a href="/#pro" class="nav-pro">Pro Pack</a></div>
+</nav>
+
+<article class="article">
+<h1>AGENTS.md: the open format for coding agents</h1>
+<p><code>AGENTS.md</code> is a plain markdown file in your repository root that tells AI coding agents how to work in your codebase. It's an open convention — not owned by any one vendor — and it has become the closest thing the agent ecosystem has to a standard: one file, read by many tools, instead of a different config per assistant.</p>
+
+<h2>Who reads it</h2>
+<p>A growing set of coding agents and editors look for <code>AGENTS.md</code> automatically, and vendor-specific files (like Claude Code's <code>CLAUDE.md</code>) carry the same substance. The practical takeaway: write the content once, ship it as <code>AGENTS.md</code> for broad coverage, and mirror it into vendor files where you use those tools. Many teams simply commit both; our generator emits both from one pass.</p>
+
+<h2>What belongs in it</h2>
+<ul>
+<li><strong>Setup and commands</strong> — install, dev server, build, lint, and tests, with the exact single-test invocation. Wrong or missing commands are the #1 way agents waste time and break builds.</li>
+<li><strong>Testing instructions</strong> — what to run before finishing, and what "done" means here.</li>
+<li><strong>Code style and conventions</strong> — the rules your reviewers actually enforce, written imperatively.</li>
+<li><strong>PR expectations</strong> — scope, description style, what must be green before opening one.</li>
+</ul>
+
+<h2>A complete example</h2>
+<pre># AGENTS.md
+
+## Project
+
+**acme-storefront** — e-commerce frontend.
+Stack: TypeScript, Next.js (App Router), pnpm, Vitest.
+
+## Setup and commands
+
+- Install dependencies: `pnpm install`
+- Run dev server: `pnpm dev`
+- Build: `pnpm build`
+- Run all tests: `pnpm test`
+- Run a single test: `pnpm vitest run path/to/file.test.ts -t "name"`
+- Lint: `pnpm lint`
+
+## Testing
+
+Tests use Vitest. Write or update tests alongside behavior changes;
+run the full suite before finishing.
+
+## Code style and conventions
+
+- Components are Server Components by default — add `"use client"`
+  only when the component needs state, effects, or browser APIs.
+- Never commit secrets. `.env*` files are local-only.
+- After changes, run tests and lint before considering work done.
+
+## Pull requests
+
+- One focused change per PR; describe what and why.
+- Tests and lint must pass before opening.</pre>
+
+<h2>AGENTS.md vs CLAUDE.md</h2>
+<p><code>CLAUDE.md</code> is Claude Code's native instruction file; <code>AGENTS.md</code> is the tool-agnostic standard. Same job, different scope. If your team uses multiple agents, maintain <code>AGENTS.md</code> as the source of truth. If you're all-in on Claude Code, <code>CLAUDE.md</code> gets you Claude-specific loading behavior. Committing both costs nothing — they're small files — and covers every tool. See also our <a href="/claude-md-guide/">CLAUDE.md guide</a>.</p>
+
+<h2>Keeping it useful</h2>
+<ul>
+<li>Review changes to it in PRs like code — agents trust it over their own exploration, so a stale file actively misleads.</li>
+<li>Keep it short and imperative; 60 good lines beat 400 thorough ones.</li>
+<li>When an agent makes the same mistake twice, that's a missing line — add it.</li>
+</ul>
+
+<div class="cta-band">
+  <span><strong>Generate yours in 30 seconds.</strong> Paste a manifest, get AGENTS.md + CLAUDE.md tailored to your stack — free, in your browser. Or run <code>npx getagentready</code> in your repo.</span>
+  <a href="/#tool">Generate mine →</a>
+</div>
+</article>
+
+<footer class="footer">
+  <span>© 2026 AgentReady · <a href="mailto:hello@getagentready.dev">hello@getagentready.dev</a> · <a href="/claude-md-guide/">CLAUDE.md guide</a></span>
+  <span class="footer-note">Runs in your browser. Your code stays yours.</span>
+</footer>
+</body>
+</html>
