@@ -126,7 +126,10 @@ function currentFiles() {
 function regenerate() {
   const files = currentFiles();
   const profile = detect(files);
-  lastResult = generate(profile, { description: descInput.value });
+  lastResult = generate(profile, {
+    description: descInput.value,
+    attribution: $('#attribution-input').checked,
+  });
   renderChips(profile);
   renderOutput();
   filenameEl.textContent = files.length ? files.map((f) => f.name).join(' + ') : 'paste a manifest';
@@ -154,6 +157,7 @@ input.addEventListener('input', () => {
   regenerate();
 });
 descInput.addEventListener('input', regenerate);
+$('#attribution-input').addEventListener('change', regenerate);
 
 document.querySelectorAll('.samples button').forEach((btn) => {
   btn.addEventListener('click', () => {

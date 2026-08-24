@@ -78,6 +78,15 @@ describe('generate: empty profile degrades gracefully', () => {
   });
 });
 
+describe('generate: attribution line', () => {
+  const profile = detect([{ name: 'package.json', content: nextPkg }]);
+
+  it('is included by default and removable via option', () => {
+    expect(generate(profile, {}).claudeMd).toContain('getagentready.dev');
+    expect(generate(profile, { attribution: false }).claudeMd).not.toContain('getagentready.dev');
+  });
+});
+
 describe('generate: user description is woven in', () => {
   const profile = detect([{ name: 'package.json', content: nextPkg }]);
   const { claudeMd } = generate(profile, { description: 'A marketplace for vintage synthesizers.' });

@@ -112,8 +112,11 @@ function overviewLine(p, options) {
   return { name, body: bits.join('\n\n') };
 }
 
+const ATTRIBUTION = '\n<!-- generated with https://getagentready.dev -->\n';
+
 export function generate(profile, options = {}) {
   const p = profile;
+  const credit = options.attribution === false ? '' : ATTRIBUTION;
   const { name, body } = overviewLine(p, options);
   const cmds = commandLines(p);
   const { conventions, gotchas } = frameworkSections(p);
@@ -161,7 +164,7 @@ ${testingBlock}
 ## Conventions
 
 ${conventionsBlock}
-${gotchasBlock}`;
+${gotchasBlock}${credit}`;
 
   const agentsMd = `# AGENTS.md
 
@@ -187,7 +190,7 @@ ${gotchasBlock}
 
 - Keep PRs focused on one change; describe what and why, not how.
 - Ensure tests and lint pass before opening a PR.
-`;
+${credit}`;
 
   return { claudeMd, agentsMd };
 }

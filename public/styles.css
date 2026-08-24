@@ -120,6 +120,7 @@ textarea#manifest-input:focus { outline: none; }
 }
 #description-input:focus { outline: none; border-color: var(--accent-bright); }
 .added-files { margin-top: 8px; font-family: var(--mono); font-size: 0.72rem; color: var(--pane-muted); }
+.attribution-toggle { display: flex; gap: 6px; align-items: center; margin-top: 8px; font-family: var(--mono); font-size: 0.72rem; color: var(--pane-muted); cursor: pointer; }
 
 /* conveyor between panes */
 .conveyor {

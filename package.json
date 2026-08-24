@@ -1,8 +1,15 @@
 {
-  "name": "agentready",
-  "private": true,
+  "name": "getagentready",
   "version": "0.1.0",
+  "description": "Generate CLAUDE.md + AGENTS.md tailored to your repo — exact commands, stack conventions, and the gotchas that trip up AI coding agents.",
   "type": "module",
+  "bin": { "getagentready": "cli/getagentready.js" },
+  "files": ["cli", "public/lib", "README.md"],
+  "repository": { "type": "git", "url": "git+https://github.com/cyberpatrolunit/agentready.git" },
+  "homepage": "https://getagentready.dev",
+  "keywords": ["claude-code", "claude-md", "agents-md", "ai-agents", "ai-coding", "developer-tools", "codegen"],
+  "license": "MIT",
+  "engines": { "node": ">=18" },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
