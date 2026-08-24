@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code skills: what they are and how to write good ones</title>
+<meta name="description" content="How Claude Code skills work — SKILL.md format, when they trigger, what separates a skill that changes agent behavior from a wall of platitudes. With a free downloadable example.">
+<link rel="canonical" href="https://getagentready.dev/claude-code-skills-guide/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101826'/%3E%3Cpath d='M9 21l4-10h2l4 10h-2.2l-.8-2.2h-4l-.8 2.2H9zm5-8l-1.5 4h3L14 13z' fill='%233fb950'/%3E%3Cpath d='M21 11h2v10h-2z' fill='%23e6edf3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .article { max-width: 720px; margin: 40px auto 0; padding: 0 24px; }
+  .article h1 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 14px; }
+  .article h2 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.01em; margin: 36px 0 10px; }
+  .article p, .article li { color: var(--muted); }
+  .article strong { color: var(--ink); }
+  .article ul { padding-left: 20px; display: grid; gap: 6px; }
+  .article pre { background: var(--pane); color: var(--pane-text); border: 1px solid var(--pane-line); border-radius: 10px; padding: 16px; overflow-x: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.55; }
+  .cta-band { margin: 40px 0; padding: 20px 22px; border: 1px solid var(--line); border-radius: 12px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .cta-band a { background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; padding: 10px 18px; border-radius: 8px; }
+  @media (prefers-color-scheme: dark) { .cta-band a { color: #08110a; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="/"><span class="brand-mark">A|</span> AgentReady</a>
+  <div class="nav-links"><a href="/#tool">Generator</a><a href="/#pro" class="nav-pro">Pro Pack</a></div>
+</nav>
+
+<article class="article">
+<h1>Claude Code skills: what they are and how to write good ones</h1>
+<p>A skill is a reusable process you install once and the agent applies whenever it fits: a directory containing a <code>SKILL.md</code>, dropped into <code>.claude/skills/</code> in a repo (or <code>~/.claude/skills/</code> for everywhere). Where <a href="/claude-md-guide/">CLAUDE.md</a> describes <em>your repo</em>, a skill describes <em>a way of working</em> — how to review code, how to debug, how to cut a release — portable across every project you touch.</p>
+
+<h2>The format</h2>
+<pre>---
+name: codebase-tour
+description: Use when onboarding to an unfamiliar repository or asked
+  "how does X work here" — build a map before answering from fragments.
+---
+
+# Codebase Tour
+
+Random-walking a strange repo produces confident answers about the
+wrong layer. The fix is a fixed reading order: entry points and build
+config first, then one real feature traced end to end, then generalize.
+
+## Process
+1. Read the build/config files before any source file …</pre>
+<p>Two parts matter most: the <strong>description</strong> — it starts with "Use when …" because that's literally how the agent decides to invoke it — and the body, which the agent follows as instructions once triggered.</p>
+
+<h2>What separates a good skill from a wall of text</h2>
+<ul>
+<li><strong>An ordered process, not principles.</strong> "Write tests first" changes nothing. "1. Write the failing test. 2. Run it and confirm it fails on the assertion. 3. …" changes behavior, because each step is checkable.</li>
+<li><strong>Real commands.</strong> A CI-triage skill that says <code>gh run view --log-failed</code> gets used; one that says "examine the logs" gets paraphrased away.</li>
+<li><strong>Red-flag tables.</strong> The most valuable part of a mature skill is a list of the rationalizations that mean the process is being skipped ("it's probably flaky — rerun it") paired with the correction. Agents rationalize exactly like people; naming the excuse in advance defuses it.</li>
+<li><strong>One job per skill.</strong> A skill that covers reviewing <em>and</em> refactoring <em>and</em> testing triggers for none of them. Narrow descriptions trigger reliably.</li>
+<li><strong>Short.</strong> 60–110 lines. The skill loads into working context — pay for every line with changed behavior.</li>
+</ul>
+
+<h2>Try a complete example, free</h2>
+<p>The <a href="https://github.com/cyberpatrolunit/agentready/tree/main/skills/codebase-tour">codebase-tour skill</a> is a full production example (MIT): a disciplined process for onboarding to an unfamiliar repo — entry points first, one feature traced end to end, then a structured tour document. Install it:</p>
+<pre>mkdir -p .claude/skills
+git clone https://github.com/cyberpatrolunit/agentready
+cp -r agentready/skills/codebase-tour .claude/skills/</pre>
+<p>Then ask Claude Code for a tour of your codebase and watch it follow the process.</p>
+
+<div class="cta-band">
+  <span><strong>Want the full set?</strong> The Agent-Ready Pro Pack ships 12 skills built this way — code review, TDD, systematic debugging, safe refactoring, DB migrations, release checklists, CI triage and more — plus hooks and per-stack configs.</span>
+  <a href="/#pro">Get the Pro Pack →</a>
+</div>
+</article>
+
+<footer class="footer">
+  <span>© 2026 AgentReady · <a href="mailto:hello@getagentready.dev">hello@getagentready.dev</a> · <a href="/claude-md-guide/">CLAUDE.md guide</a> · <a href="/agents-md-guide/">AGENTS.md guide</a> · <a href="/claude-code-hooks-guide/">Hooks guide</a></span>
+  <span class="footer-note">Runs in your browser. Your code stays yours.</span>
+</footer>
+</body>
+</html>
