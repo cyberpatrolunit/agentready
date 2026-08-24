@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLAUDE.md: format, examples, and best practices (2026 guide)</title>
+<meta name="description" content="What goes in a CLAUDE.md file, what to leave out, a complete annotated example, and how CLAUDE.md differs from AGENTS.md. With a free generator.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101826'/%3E%3Cpath d='M9 21l4-10h2l4 10h-2.2l-.8-2.2h-4l-.8 2.2H9zm5-8l-1.5 4h3L14 13z' fill='%233fb950'/%3E%3Cpath d='M21 11h2v10h-2z' fill='%23e6edf3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .article { max-width: 720px; margin: 40px auto 0; padding: 0 24px; }
+  .article h1 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.6rem); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 14px; }
+  .article h2 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.01em; margin: 36px 0 10px; }
+  .article p, .article li { color: var(--muted); }
+  .article strong { color: var(--ink); }
+  .article ul { padding-left: 20px; display: grid; gap: 6px; }
+  .article pre { background: var(--pane); color: var(--pane-text); border: 1px solid var(--pane-line); border-radius: 10px; padding: 16px; overflow-x: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.55; }
+  .cta-band { margin: 40px 0; padding: 20px 22px; border: 1px solid var(--line); border-radius: 12px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .cta-band a { background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; padding: 10px 18px; border-radius: 8px; }
+  @media (prefers-color-scheme: dark) { .cta-band a { color: #08110a; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="/"><span class="brand-mark">A|</span> AgentReady</a>
+  <div class="nav-links"><a href="/#tool">Generator</a><a href="/#pro" class="nav-pro">Pro Pack</a></div>
+</nav>
+
+<article class="article">
+<h1>CLAUDE.md: format, examples, and best practices</h1>
+<p>A <code>CLAUDE.md</code> file sits in your repository root and is read by Claude Code at the start of every session. It's the difference between an agent that guesses your commands and conventions, and one that knows them. This guide covers what to put in it, what to leave out, and the mistakes that make agents worse.</p>
+
+<h2>What CLAUDE.md is for</h2>
+<p>Claude Code loads <code>CLAUDE.md</code> automatically as standing instructions. It's the right place for exactly three kinds of content:</p>
+<ul>
+<li><strong>Commands</strong> — how to install, run, build, lint, and test <em>this</em> repo, including how to run a single test. This is the highest-value section: without it, agents invent plausible-but-wrong commands.</li>
+<li><strong>Conventions</strong> — the rules a senior teammate would enforce in review: framework idioms, boundaries between layers, what not to touch.</li>
+<li><strong>Gotchas</strong> — the failure modes of your specific stack, so the agent doesn't rediscover them at your expense.</li>
+</ul>
+
+<h2>A complete example</h2>
+<pre># CLAUDE.md
+
+## Project
+
+**acme-api** — internal billing API.
+Stack: Python, FastAPI, uv, pytest, Ruff.
+
+## Commands
+
+- Install dependencies: `uv sync`
+- Run dev server: `uv run uvicorn app.main:app --reload`
+- Run all tests: `uv run pytest`
+- Run a single test: `uv run pytest tests/test_billing.py::test_proration`
+- Lint: `uv run ruff check .`
+- Format: `uv run ruff format .`
+
+## Conventions
+
+- Request/response shapes are Pydantic models; set `response_model` on routes.
+- DB access through the repository layer in `app/repos/` — routes never
+  touch the session directly.
+- Async routes must not call blocking IO; use async clients or
+  `run_in_threadpool`.
+
+## Gotchas
+
+- A sync call inside an `async def` route blocks the event loop —
+  this is our most common performance regression.
+- Alembic autogenerate misses column renames; always read the
+  generated migration before applying.</pre>
+
+<h2>Best practices</h2>
+<ul>
+<li><strong>Short beats complete.</strong> The file is loaded into every session's context. 60 focused lines outperform 400 thorough ones — an agent skims a wall of text the same way you do.</li>
+<li><strong>Imperative voice.</strong> "Use X", "Never Y". Not "we generally prefer".</li>
+<li><strong>Exact commands, not descriptions.</strong> <code>uv run pytest tests/foo.py::test_name</code>, not "run pytest on the relevant file".</li>
+<li><strong>Keep it true.</strong> A CLAUDE.md that says <code>npm test</code> after you moved to <code>vitest</code> is worse than no file — the agent trusts it over its own exploration. Review it in PRs like code.</li>
+<li><strong>Don't duplicate what the agent can read.</strong> Directory listings, full API docs, and code walkthroughs age badly; the agent can explore. Record what it <em>can't</em> infer: intent, boundaries, tribal knowledge.</li>
+</ul>
+
+<h2>CLAUDE.md vs AGENTS.md</h2>
+<p><code>AGENTS.md</code> is the open, tool-agnostic equivalent — the same substance, read by many coding agents. Claude Code reads AGENTS.md as well when CLAUDE.md is absent; teams commonly commit both (or make one a symlink of the other) so every agent in the toolchain gets the same instructions. Our generator emits both from one detection pass.</p>
+
+<div class="cta-band">
+  <span><strong>Skip the blank page.</strong> Paste your package.json or pyproject.toml and get both files tailored to your stack — free, in your browser.</span>
+  <a href="/#tool">Generate mine →</a>
+</div>
+</article>
+
+<footer class="footer">
+  <span>© 2026 AgentReady · <a href="mailto:hello@getagentready.dev">hello@getagentready.dev</a></span>
+  <span class="footer-note">Runs in your browser. Your code stays yours.</span>
+</footer>
+</body>
+</html>
