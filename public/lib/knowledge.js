@@ -233,6 +233,41 @@ export const FRAMEWORK_KNOWLEDGE = {
     conventions: ['One file per command under `cmd/`; keep `RunE` thin and return errors instead of calling `os.Exit`.'],
     gotchas: ['Flag values bound with `Viper` resolve at execute time — reading them at init returns zero values.'],
   },
+  'spring-boot': {
+    label: 'Spring Boot',
+    conventions: [
+      'Constructor injection over field injection; components discovered via classpath scanning under the main application package.',
+      'Configuration in `application.yml` with `@ConfigurationProperties` classes, not scattered `@Value` reads.',
+      'Layer boundaries: controllers thin, `@Service` for logic, `@Repository`/Spring Data for persistence; DTOs at the API edge, entities stay internal.',
+    ],
+    gotchas: [
+      'Beans outside the main application package are silently not scanned — the most common "why is my bean null" cause.',
+      '`@Transactional` on private or self-invoked methods does nothing (proxy-based AOP); calls must cross a bean boundary.',
+      'Slice tests (`@WebMvcTest`, `@DataJpaTest`) load partial contexts — mock what the slice excludes or the context fails to start.',
+    ],
+  },
+  quarkus: {
+    label: 'Quarkus',
+    conventions: ['Prefer build-time configuration; use `@QuarkusTest` for integration tests and dev services for dependencies.'],
+    gotchas: ['Reflection-heavy libraries need registration for native image builds — test native mode before shipping it.'],
+  },
+  micronaut: {
+    label: 'Micronaut',
+    conventions: ['DI is compile-time; missing injections surface at build, so treat build warnings as errors.'],
+    gotchas: ['No classpath scanning at runtime — dynamic bean lookups that work in Spring do not translate.'],
+  },
+  aspnet: {
+    label: 'ASP.NET Core',
+    conventions: [
+      'Register services in `Program.cs` with the right lifetime (singleton/scoped/transient); inject via constructors.',
+      'Use minimal APIs or controllers consistently — match whichever the project already uses.',
+      'Async all the way down: `async Task` endpoints, no `.Result`/`.Wait()` on tasks.',
+    ],
+    gotchas: [
+      'Capturing a scoped service (like a DbContext) in a singleton throws at runtime, not compile time.',
+      '`.Result`/`.Wait()` on async code can deadlock in classic contexts and starves the thread pool — always await.',
+    ],
+  },
   laravel: {
     label: 'Laravel',
     conventions: [

@@ -1,5 +1,5 @@
-import { detect } from '/lib/detect.js?v=2';
-import { generate, stackSummary } from '/lib/generate.js?v=2';
+import { detect } from '/lib/detect.js?v=3';
+import { generate, stackSummary } from '/lib/generate.js?v=3';
 
 // ---- config (filled in at launch) ----
 const GUMROAD_URL = 'https://agentready.gumroad.com/l/getagentready';

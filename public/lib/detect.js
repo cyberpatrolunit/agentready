@@ -103,6 +103,9 @@ export function detect(files) {
       else if (name === 'composer.json') detectComposer(p, f.content);
       else if (name === 'gemfile') detectGemfile(p, f.content);
       else if (name === '.cursorrules' || name.endsWith('.mdc')) detectCursorRules(p, f.content);
+      else if (name === 'pom.xml') detectMaven(p, f.content);
+      else if (name === 'build.gradle' || name === 'build.gradle.kts') detectGradle(p, f.content);
+      else if (name.endsWith('.csproj')) detectCsproj(p, f.content, f.name);
     } catch {
       p.notes.push(`\`${f.name}\` could not be parsed; used sensible defaults for its ecosystem.`);
       fallbackLanguage(p, name);
@@ -278,6 +281,50 @@ function detectGo(p, content) {
     test: p.commands.test || 'go test ./...',
     lint: p.commands.lint || 'go vet ./...',
     format: p.commands.format || 'gofmt -w .',
+  });
+}
+
+function detectJavaFrameworks(p, text) {
+  if (/spring-boot|org\.springframework\.boot/.test(text)) add(p.frameworks, 'spring-boot');
+  if (/io\.quarkus/.test(text)) add(p.frameworks, 'quarkus');
+  if (/io\.micronaut/.test(text)) add(p.frameworks, 'micronaut');
+}
+
+function detectMaven(p, content) {
+  add(p.languages, 'java');
+  const arts = [...content.matchAll(/<artifactId>([^<]+)<\/artifactId>/g)].map((m) => m[1]);
+  // First artifactId outside a <parent> block is usually the project's own.
+  const own = arts.find((a) => !/spring-boot-starter-parent|-parent$/.test(a));
+  p.projectName = p.projectName || own || null;
+  detectJavaFrameworks(p, content);
+  Object.assign(p.commands, {
+    build: p.commands.build || 'mvn -q package',
+    test: p.commands.test || 'mvn -q test',
+    format: p.commands.format || 'mvn spotless:apply',
+  });
+  if (p.frameworks.includes('spring-boot')) p.commands.dev = p.commands.dev || 'mvn spring-boot:run';
+}
+
+function detectGradle(p, content) {
+  add(p.languages, /kotlin\(|\.kts|org\.jetbrains\.kotlin/.test(content) ? 'kotlin' : 'java');
+  detectJavaFrameworks(p, content);
+  Object.assign(p.commands, {
+    build: p.commands.build || './gradlew build',
+    test: p.commands.test || './gradlew test',
+  });
+  if (p.frameworks.includes('spring-boot')) p.commands.dev = p.commands.dev || './gradlew bootRun';
+}
+
+function detectCsproj(p, content, fileName) {
+  add(p.languages, 'csharp');
+  p.projectName = p.projectName || fileName.replace(/\.csproj$/i, '');
+  if (/Microsoft\.NET\.Sdk\.Web|Microsoft\.AspNetCore/.test(content)) add(p.frameworks, 'aspnet');
+  Object.assign(p.commands, {
+    install: p.commands.install || 'dotnet restore',
+    dev: p.commands.dev || 'dotnet watch run',
+    build: p.commands.build || 'dotnet build',
+    test: p.commands.test || 'dotnet test',
+    format: p.commands.format || 'dotnet format',
   });
 }
 

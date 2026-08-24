@@ -8,6 +8,9 @@ const LANG_LABELS = {
   go: 'Go',
   php: 'PHP',
   ruby: 'Ruby',
+  java: 'Java',
+  kotlin: 'Kotlin',
+  csharp: 'C#',
 };
 
 const TOOL_LABELS = {

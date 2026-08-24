@@ -178,3 +178,45 @@ describe('detect: .cursorrules import', () => {
     expect(p.importedRules).toContain('functional components');
   });
 });
+
+describe('detect: java maven spring boot', () => {
+  const pom = `<?xml version="1.0"?>
+<project>
+  <artifactId>example-service</artifactId>
+  <parent><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-parent</artifactId></parent>
+  <dependencies>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+  </dependencies>
+</project>`;
+  const p = detect([{ name: 'pom.xml', content: pom }]);
+  it('identifies java, maven, spring boot', () => {
+    expect(p.languages).toContain('java');
+    expect(p.frameworks).toContain('spring-boot');
+    expect(p.commands.test).toContain('mvn');
+    expect(p.projectName).toBe('example-service');
+  });
+});
+
+describe('detect: gradle spring boot', () => {
+  const gradle = `plugins { id 'org.springframework.boot' version '3.3.0' }
+dependencies { implementation 'org.springframework.boot:spring-boot-starter-web' }`;
+  const p = detect([{ name: 'build.gradle', content: gradle }]);
+  it('identifies java + gradle + spring boot', () => {
+    expect(p.languages).toContain('java');
+    expect(p.frameworks).toContain('spring-boot');
+    expect(p.commands.test).toBe('./gradlew test');
+  });
+});
+
+describe('detect: dotnet csproj', () => {
+  const csproj = `<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup><TargetFramework>net9.0</TargetFramework></PropertyGroup>
+  <ItemGroup><PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" /></ItemGroup>
+</Project>`;
+  const p = detect([{ name: 'Example.Api.csproj', content: csproj }]);
+  it('identifies csharp + aspnet', () => {
+    expect(p.languages).toContain('csharp');
+    expect(p.frameworks).toContain('aspnet');
+    expect(p.commands.test).toBe('dotnet test');
+  });
+});
