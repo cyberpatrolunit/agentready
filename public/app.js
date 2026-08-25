@@ -84,6 +84,28 @@ tokio = { version = "1", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
 tracing = "0.1"`,
   },
+  spring: {
+    filename: 'pom.xml',
+    content: `<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <artifactId>acme-billing-service</artifactId>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.0</version>
+  </parent>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+  </dependencies>
+</project>`,
+  },
   go: {
     filename: 'go.mod',
     content: `module github.com/acme/acme-svc
