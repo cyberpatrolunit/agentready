@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLAUDE.md for Next.js: complete example + free generator</title>
+<meta name="description" content="A complete CLAUDE.md example for Next.js projects — exact commands, conventions, and gotchas — plus a free generator that tailors it to your actual repo.">
+<link rel="canonical" href="https://getagentready.dev/claude-md-for-nextjs/">
+<meta property="og:image" content="https://getagentready.dev/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://getagentready.dev/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23101826'/%3E%3Cpath d='M9 21l4-10h2l4 10h-2.2l-.8-2.2h-4l-.8 2.2H9zm5-8l-1.5 4h3L14 13z' fill='%233fb950'/%3E%3Cpath d='M21 11h2v10h-2z' fill='%23e6edf3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .article { max-width: 760px; margin: 40px auto 0; padding: 0 24px; }
+  .article h1 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.5vw, 2.4rem); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 14px; }
+  .article h2 { font-family: var(--display); font-weight: 700; font-size: 1.3rem; margin: 32px 0 10px; }
+  .article p { color: var(--muted); }
+  .article pre { background: var(--pane); color: var(--pane-text); border: 1px solid var(--pane-line); border-radius: 10px; padding: 16px; overflow-x: auto; font-family: var(--mono); font-size: 0.76rem; line-height: 1.55; }
+  .cta-band { margin: 36px 0; padding: 20px 22px; border: 1px solid var(--line); border-radius: 12px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .cta-band a { background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; padding: 10px 18px; border-radius: 8px; }
+  @media (prefers-color-scheme: dark) { .cta-band a { color: #08110a; } }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="brand-mark">A|</span> AgentReady</a>
+  <div class="nav-links"><a href="/#tool">Generator</a><a href="/#pro" class="nav-pro">Pro Pack</a></div>
+</nav>
+<article class="article">
+<h1>CLAUDE.md for Next.js</h1>
+<p>Server Components vs client components, App Router structure, and env-var prefixes are exactly where agents go wrong in Next.js — a good CLAUDE.md names all three. Below is a complete, committable example for a typical Next.js project. To get one tailored to <em>your</em> dependencies and scripts, paste your manifest into the <a href="/#tool">free generator</a> (client-side, nothing uploaded) or run <code>npx getagentready</code> in your repo.</p>
+<h2>Complete example</h2>
+<pre># CLAUDE.md
+
+This file guides Claude Code when working in this repository.
+
+## Project
+
+**example-next-app** — Stack: TypeScript, Next.js (App Router), pnpm, Vitest, ESLint, Prettier.
+
+## Commands
+
+- Install dependencies: `pnpm install`
+- Run dev server: `pnpm dev`
+- Build: `pnpm build`
+- Run all tests: `pnpm test`
+- Run a single test: `pnpm vitest run path/to/file.test.ts -t "test name"`
+- Lint: `pnpm lint`
+- Type-check: `pnpm typecheck`
+
+## Testing
+
+Tests use Vitest. Write or update tests alongside behavior changes; run the single-test command during iteration and the full suite before finishing.
+
+## Conventions
+
+- Use the App Router (`app/`) structure: `page.tsx` for routes, `layout.tsx` for shared chrome, `route.ts` for API endpoints.
+- Components are Server Components by default — add `"use client"` only when the component needs state, effects, or browser APIs.
+- Fetch data in Server Components or route handlers, not in client-side `useEffect`.
+- Use `next/image` for images and `next/link` for internal navigation.
+- Prefer small, focused changes; do not refactor unrelated code in the same change.
+- Match the existing code style of the file you are editing over any global preference.
+- Never commit secrets. `.env*` files are local-only.
+- After making changes, run the test and lint commands above before considering work done.
+
+## Gotchas
+
+- Server Components cannot use hooks or event handlers; moving code between server/client contexts is the most common source of build errors.
+- Environment variables are only exposed to the browser when prefixed with `NEXT_PUBLIC_`.
+- `next dev` masks some production-only issues — verify SSR/streaming behavior with `next build &amp;&amp; next start` before calling a change done.
+
+&lt;!-- generated with https://getagentready.dev --&gt;
+</pre>
+<h2>Going further</h2>
+<p>This is the generated baseline. The <a href="/#pro">Agent-Ready Pro Pack</a> includes a hand-tuned, deeper Next.js configuration — architecture guidance, testing strategy, common-task recipes — plus 12 workflow skills and enforcement hooks. See also the <a href="/claude-md-guide/">CLAUDE.md guide</a> and <a href="/agents-md-guide/">AGENTS.md guide</a>.</p>
+<div class="cta-band">
+  <span><strong>Generate yours in 30 seconds</strong> — tailored to your actual Next.js repo.</span>
+  <a href="/#tool">Generate mine →</a>
+</div>
+</article>
+<footer class="footer">
+  <span>© 2026 AgentReady · <a href="mailto:hello@getagentready.dev">hello@getagentready.dev</a> · <a href="/claude-md-guide/">CLAUDE.md guide</a></span>
+  <span class="footer-note">Runs in your browser. Your code stays yours.</span>
+</footer>
+</body>
+</html>
