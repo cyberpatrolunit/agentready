@@ -130,6 +130,9 @@ function guessFilename(text) {
     } catch { /* fall through */ }
     return 'package.json';
   }
+  if (t.startsWith('<?xml') || /<project[\s>]/.test(t) && /<artifactId>/.test(t)) return 'pom.xml';
+  if (/<Project Sdk=/.test(t)) return 'Example.csproj';
+  if (/^plugins\s*\{/m.test(t) || /\b(implementation|testImplementation)\s*[('"]/.test(t)) return 'build.gradle';
   if (/^module\s+\S+/m.test(t)) return 'go.mod';
   if (/\[package\]/.test(t) && /edition\s*=/.test(t)) return 'Cargo.toml';
   if (/\[project\]|\[tool\./.test(t)) return 'pyproject.toml';
