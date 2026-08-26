@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=12">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"AgentReady","url":"https://getagentready.dev/","applicationCategory":"DeveloperApplication","operatingSystem":"Web, Node.js","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free CLAUDE.md and AGENTS.md generator tailored to your stack. Paste a package.json, pyproject.toml, Cargo.toml or go.mod and get exact commands, conventions, and gotchas for ~30 frameworks. Runs entirely in your browser; also available as npx getagentready."}
 </script>
@@ -26,24 +26,72 @@
 </script></head>
 <body>
 
+<span class="reg reg-tl" aria-hidden="true"></span>
+<span class="reg reg-tr" aria-hidden="true"></span>
+<span class="reg reg-bl" aria-hidden="true"></span>
+<span class="reg reg-br" aria-hidden="true"></span>
+
 <nav class="nav">
   <a class="brand" href="/"><span class="brand-mark">A|</span> AgentReady</a>
   <div class="nav-links">
     <a href="#tool">Generator</a>
+    <a href="/claude-md-guide/">Guides</a>
     <a href="#pro" class="nav-pro">Pro Pack</a>
   </div>
 </nav>
 
 <header class="hero">
-  <p class="eyebrow">CLAUDE.md · AGENTS.md · generated from your real stack</p>
-  <h1>Your repo, explained<br>to your coding agent.</h1>
-  <p class="sub">Paste a <code>package.json</code>, <code>pyproject.toml</code>, <code>Cargo.toml</code> or <code>go.mod</code>.
-  Get a tailored <code>CLAUDE.md</code> and <code>AGENTS.md</code> — commands, conventions and the gotchas of your exact stack.
-  Free. No signup. <strong>Nothing leaves your browser.</strong> Prefer the terminal? <code>npx getagentready</code></p>
+  <div class="hero-copy">
+    <p class="eyebrow">Fig. 1 — CLAUDE.md · AGENTS.md, from your real stack</p>
+    <h1>Your repo, explained to your coding agent.</h1>
+    <p class="sub">Paste a <code>package.json</code>, <code>pyproject.toml</code>, <code>Cargo.toml</code> or <code>go.mod</code>.
+    Get a tailored <code>CLAUDE.md</code> and <code>AGENTS.md</code> — commands, conventions and the gotchas of your exact stack.
+    Free. No signup. <strong>Nothing leaves your browser.</strong></p>
+    <div class="hero-ctas">
+      <a class="cta-primary" href="#tool">Generate mine</a>
+      <code class="npx-pill">npx getagentready</code>
+    </div>
+    <p class="hero-micro">free · no signup · client-side · MIT source</p>
+  </div>
+  <figure class="hero-fig" aria-hidden="true">
+    <svg viewBox="0 0 640 216" fill="none">
+      <rect x="8" y="34" width="200" height="140" rx="10" class="fg-box"></rect>
+      <rect x="8" y="34" width="200" height="34" rx="10" class="fg-head"></rect>
+      <rect x="8" y="56" width="200" height="12" class="fg-head"></rect>
+      <text x="24" y="56" class="fg-file">package.json</text>
+      <text x="24" y="94" class="fg-dep">"next": "15.1.0"</text>
+      <text x="24" y="116" class="fg-dep">"vitest": "^3.0.0"</text>
+      <text x="24" y="138" class="fg-dep">"eslint": "^9.0.0"</text>
+      <path d="M208 104 H262" class="fg-dash"></path>
+      <path d="M256 98 L268 104 L256 110" class="fg-solid"></path>
+      <circle cx="330" cy="104" r="58" class="fg-box"></circle>
+      <circle cx="330" cy="104" r="46" class="fg-ring" stroke-width="1" stroke-dasharray="3 5"></circle>
+      <path d="M312 104 a18 18 0 1 1 8 15" class="fg-glyph"></path>
+      <path d="M317 116 l3 8 l8 -3" class="fg-glyph"></path>
+      <text x="330" y="182" text-anchor="middle" class="fg-note">detect()</text>
+      <text x="330" y="200" text-anchor="middle" class="fg-sub">30+ frameworks</text>
+      <path d="M388 104 H436 M436 104 V60 M436 104 V148" class="fg-dash"></path>
+      <path d="M436 60 H452 M436 148 H452" class="fg-dash"></path>
+      <path d="M446 54 L458 60 L446 66" class="fg-solid"></path>
+      <path d="M446 142 L458 148 L446 154" class="fg-solid"></path>
+      <rect x="460" y="14" width="172" height="92" rx="10" class="fg-head" stroke="var(--fig-stroke)" stroke-width="1.5"></rect>
+      <text x="478" y="44" class="fg-file">CLAUDE.md</text>
+      <rect x="478" y="56" width="120" height="6" rx="3" class="fg-bar"></rect>
+      <rect x="478" y="70" width="96" height="6" rx="3" class="fg-bar"></rect>
+      <rect x="478" y="84" width="132" height="6" rx="3" class="fg-bar"></rect>
+      <rect x="460" y="118" width="172" height="92" rx="10" class="fg-head" stroke="var(--fig-stroke)" stroke-width="1.5"></rect>
+      <text x="478" y="148" class="fg-file">AGENTS.md</text>
+      <rect x="478" y="160" width="110" height="6" rx="3" class="fg-bar"></rect>
+      <rect x="478" y="174" width="128" height="6" rx="3" class="fg-bar"></rect>
+      <rect x="478" y="188" width="88" height="6" rx="3" class="fg-bar"></rect>
+    </svg>
+    <figcaption>manifest in → tailored instructions out · ~30s · zero upload</figcaption>
+  </figure>
 </header>
 
 <main>
 <section class="tool" id="tool" aria-label="Generator">
+  <p class="fig-label">Fig. 2 — the generator, live</p>
   <div class="pane pane-in">
     <div class="pane-bar">
       <span class="pane-title" id="input-filename">package.json</span>
